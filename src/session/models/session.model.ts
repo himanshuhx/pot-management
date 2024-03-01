@@ -1,20 +1,21 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import mongoose from 'mongoose';
 
 export type SessionDocument = Session & Document;
 
 @Schema()
 export class Session {
   @Prop()
-  id: string;
+  private _id: mongoose.Types.ObjectId;
 
   @Prop()
-  startTime: Date;
+  private startTime: Date;
 
   @Prop()
-  endTime: Date;
+  private endTime: Date;
 
   @Prop()
-  pots: [];
+  private pots: [];
 }
 
 export const SessionSchema = SchemaFactory.createForClass(Session);

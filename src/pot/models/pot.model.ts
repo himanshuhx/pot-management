@@ -8,6 +8,9 @@ export class Pot {
   sessionId: string;
 
   @Prop()
+  potId: string;
+
+  @Prop()
   balance: number;
 }
 
