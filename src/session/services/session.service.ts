@@ -86,7 +86,7 @@ export class SessionService {
       } else {
         throw new NotFoundException({
           status: HttpStatus.NOT_FOUND,
-          message: `Failed to update book, no session found with id:${sessionId}`,
+          message: `Failed to update session, no session found with id:${sessionId}`,
         });
       }
     } catch (err) {
