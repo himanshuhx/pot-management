@@ -6,16 +6,22 @@ export type SessionDocument = Session & Document;
 @Schema()
 export class Session {
   @Prop()
-  private _id: mongoose.Types.ObjectId;
+  _id: mongoose.Types.ObjectId;
 
   @Prop()
-  private startTime: Date;
+  startTime: Date;
 
   @Prop()
-  private endTime: Date;
+  endTime: Date;
 
   @Prop()
-  private pots: [];
+  sessionDuration: number;
+
+  @Prop()
+  potSize: number;
+
+  @Prop()
+  pots: [];
 }
 
 export const SessionSchema = SchemaFactory.createForClass(Session);

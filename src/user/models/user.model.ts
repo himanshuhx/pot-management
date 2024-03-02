@@ -15,6 +15,12 @@ export class User {
 
   @Prop()
   balance: string;
+
+  @Prop()
+  sessionId: string;
+
+  @Prop()
+  potId: string;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
