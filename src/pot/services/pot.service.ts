@@ -32,10 +32,10 @@ export class PotService {
     }
   }
 
-  async getAllPots(): Promise<ReturnPotDto[]> {
+  async getAllPotsFromSessionId(sessionId: string): Promise<ReturnPotDto[]> {
     try {
-      this.logger.log('retrieving All Pots');
-      return await this.potRepository.getAllPots();
+      this.logger.log(`retrieving All pots for session with id: ${sessionId}`);
+      return await this.potRepository.getAllPotsFromSessionId(sessionId);
     } catch (err) {
       throw new HttpException(
         {

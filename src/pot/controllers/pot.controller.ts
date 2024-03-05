@@ -27,16 +27,18 @@ export class PotController {
     return await this.potService.createPots(createPotsDto);
   }
 
-  @Get()
-  async getAllPots(): Promise<ReturnPotDto[]> {
-    this.logger.log('GETting all registered pots for pot game via GET API');
-    return await this.potService.getAllPots();
-  }
-
   @Get('/:potId')
   async getPotById(@Param('potId') potId: string): Promise<ReturnPotDto> {
     this.logger.log(`Searching pot with potId: ${potId} via Get API`);
     return await this.potService.getPotById(potId);
+  }
+
+  @Get('session/:sessionId')
+  async getAllPotsFromSessionId(
+    @Param('sessionId') sessionId: string,
+  ): Promise<ReturnPotDto[]> {
+    this.logger.log('GETting all registered pots for pot game via GET API');
+    return await this.potService.getAllPotsFromSessionId(sessionId);
   }
 
   @Patch('/:potId')

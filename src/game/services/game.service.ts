@@ -28,6 +28,9 @@ export class GameService {
 
       const pot = await this.potService.getPotById(gameDto.potId);
 
+      // validate whether the provided pot is assciated with provided session
+      await this.validatePotSessionAssociation(session._id, pot._id);
+
       // Get All users registered for the pot
       const registeredUsers =
         await this.userService.getAllUsersWithSessionIdAndPotId(
@@ -63,5 +66,22 @@ export class GameService {
       }
     }
     this.logger.log(`game concluded for session: ${session._id}`);
+  }
+
+  async validatePotSessionAssociation(sessionId, potId) {
+    const associatedPotsWithSession =
+      await this.potService.getAllPotsFromSessionId(sessionId);
+    const isPotAssociated = associatedPotsWithSession.some(
+      (associatedPot) => associatedPot._id === potId,
+    );
+    if (!isPotAssociated) {
+      throw new HttpException(
+        {
+          status: HttpStatus.UNPROCESSABLE_ENTITY,
+          message: `Failed to play game pot id provided does not associates with the session`,
+        },
+        HttpStatus.UNPROCESSABLE_ENTITY,
+      );
+    }
   }
 }

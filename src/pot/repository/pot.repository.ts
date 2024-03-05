@@ -17,8 +17,8 @@ export class PotRepository {
     return await this.potModel.insertMany(createPotsDto);
   }
 
-  async getAllPots(): Promise<ReturnPotDto[]> {
-    return await this.potModel.find();
+  async getAllPotsFromSessionId(sessionId: string): Promise<ReturnPotDto[]> {
+    return await this.potModel.find({ sessionId: sessionId });
   }
 
   async getPotById(bookId: string): Promise<ReturnPotDto> {
