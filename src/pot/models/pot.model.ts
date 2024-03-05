@@ -1,14 +1,15 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import mongoose from 'mongoose';
 
 export type PotDocument = Pot & Document;
 
 @Schema()
 export class Pot {
   @Prop()
-  sessionId: string;
+  _id: mongoose.Types.ObjectId;
 
   @Prop()
-  potId: string;
+  sessionId: mongoose.Types.ObjectId;
 
   @Prop()
   balance: number;

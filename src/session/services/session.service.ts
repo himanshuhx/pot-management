@@ -7,10 +7,13 @@ import {
 import { ReturnSessionDto } from '../dto/return-session.dto';
 import { SessionRepository } from '../repository/session.repository';
 import { CreateSessionDto } from '../dto/create-session.dto';
+import { PotService } from 'src/pot/services/pot.service';
+import { Pot } from 'src/pot/models/pot.model';
 
 export class SessionService {
   constructor(
     private readonly sessionRepository: SessionRepository,
+    private readonly potService: PotService,
     private readonly logger: Logger,
   ) {}
 
@@ -19,7 +22,25 @@ export class SessionService {
   ): Promise<ReturnSessionDto> {
     try {
       this.logger.log('Registering new Session');
-      return await this.sessionRepository.save(createSessionDto);
+      // calculate end time for session on basis of session duration provided
+      const endTime = new Date(createSessionDto.startTime);
+      endTime.setHours(endTime.getHours() + createSessionDto.sessionDuration);
+      createSessionDto.endTime = endTime;
+
+      // save ssion Object in DB
+      const session = await this.sessionRepository.save(createSessionDto);
+      let pots = [];
+      // create pots on the basis of potSize provided
+      for (let i = 0; i < createSessionDto.potSize; i++) {
+        // register a new pot
+        const pot = new Pot();
+        pot.sessionId = session._id;
+        pot.balance = 1000;
+        pots.push(new Pot());
+      }
+      // save pots in pot collection
+      await this.potService.createPots(pots);
+      return session;
     } catch (err) {
       throw new HttpException(
         {

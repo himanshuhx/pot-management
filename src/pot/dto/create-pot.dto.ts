@@ -6,7 +6,7 @@ export class CreatePotDto {
 
   @IsString()
   @IsNotEmpty()
-  sessionId: string;
+  sessionId: mongoose.Types.ObjectId;
 
   @IsNumber()
   balance: number;

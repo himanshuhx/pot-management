@@ -1,15 +1,18 @@
-import { IsNotEmpty, IsString } from '@nestjs/class-validator';
+import { IsDate, IsEmpty, IsNotEmpty, IsString } from '@nestjs/class-validator';
 import mongoose from 'mongoose';
 
 export class CreateSessionDto {
   public _id: mongoose.Types.ObjectId;
 
-  @IsString()
+  @IsDate()
   startTime: Date;
 
   @IsString()
   @IsNotEmpty()
   sessionDuration: number;
+
+  @IsEmpty()
+  endTime: Date;
 
   @IsString()
   @IsNotEmpty()
