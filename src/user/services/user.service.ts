@@ -20,6 +20,7 @@ export class UserService {
   async createUser(createUserDto: CreateUserDto): Promise<ReturnUserDto> {
     try {
       this.logger.log('Registering new User');
+      createUserDto.balance = 2000;
       return await this.userRepository.save(createUserDto);
     } catch (err) {
       throw new HttpException(
@@ -53,7 +54,7 @@ export class UserService {
   ): Promise<ReturnUserDto[]> {
     try {
       this.logger.log(
-        `retrieving All User Datawith session Id ${sessionId} and potId ${potId}`,
+        `retrieving All User Data with session Id ${sessionId} and potId ${potId}`,
       );
       return await this.userRepository.getAllUsersWithSessionIdAndPotId(
         sessionId,
@@ -108,7 +109,7 @@ export class UserService {
       } else {
         throw new NotFoundException({
           status: HttpStatus.NOT_FOUND,
-          message: `Failed to update book, no session found with id:${userId}`,
+          message: `Failed to update user, no user found with id:${userId}`,
         });
       }
     } catch (err) {

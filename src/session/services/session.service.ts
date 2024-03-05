@@ -79,7 +79,7 @@ export class SessionService {
 
   async getSessionById(sessionId): Promise<ReturnSessionDto> {
     try {
-      this.logger.log(`retrieving Session with ${sessionId}`);
+      this.logger.log(`retrieving Session with id ${sessionId}`);
       const sessionDetails =
         await this.sessionRepository.getSessionById(sessionId);
       if (sessionDetails) {

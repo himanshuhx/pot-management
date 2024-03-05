@@ -28,6 +28,7 @@ export class UserRepository {
   ): Promise<ReturnUserDto[]> {
     return await this.userModel.find({ sessionId: sessionId, potId: potId });
   }
+
   async getUserById(bookId: string): Promise<ReturnUserDto> {
     return await this.userModel.findOne({ _id: bookId });
   }

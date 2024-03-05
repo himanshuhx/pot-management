@@ -1,4 +1,5 @@
 import { IsNotEmpty, IsNumber, IsString } from '@nestjs/class-validator';
+import { ObjectId } from 'mongodb';
 import mongoose from 'mongoose';
 
 export class CreatePotDto {
@@ -6,7 +7,7 @@ export class CreatePotDto {
 
   @IsString()
   @IsNotEmpty()
-  sessionId: mongoose.Types.ObjectId;
+  sessionId: ObjectId;
 
   @IsNumber()
   balance: number;

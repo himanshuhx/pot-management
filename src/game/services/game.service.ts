@@ -25,6 +25,7 @@ export class GameService {
       const session = await this.sessionService.getSessionById(
         gameDto.sessionId,
       );
+
       const pot = await this.potService.getPotById(gameDto.potId);
 
       if (!session || !pot) {
@@ -49,7 +50,7 @@ export class GameService {
       throw new HttpException(
         {
           status: HttpStatus.UNPROCESSABLE_ENTITY,
-          error: `Failed to create pot with error: ${err.message}`,
+          error: `Failed to play game with error: ${err.message}`,
         },
         HttpStatus.UNPROCESSABLE_ENTITY,
       );
@@ -59,7 +60,7 @@ export class GameService {
   async startGame(registeredUsers, session, pot) {
     const potMoney = pot.balance;
     if (potMoney > 0) {
-      const wonMoneyByEachUser = potMoney / registeredUsers.length();
+      const wonMoneyByEachUser = potMoney / registeredUsers.length;
       // update money in userAccount
       for (const user of registeredUsers) {
         const newBalance = user.balance + wonMoneyByEachUser;

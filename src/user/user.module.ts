@@ -12,5 +12,6 @@ import { PotModule } from 'src/pot/pot.module';
   ],
   controllers: [UserController],
   providers: [UserService, UserRepository, PotModule, Logger],
+  exports: [UserService],
 })
 export class UserModule {}

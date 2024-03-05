@@ -5,6 +5,7 @@ import { ConfigModule } from '@nestjs/config';
 import { SessionModule } from './session/session.module';
 import { PotModule } from './pot/pot.module';
 import { UserModule } from './user/user.module';
+import { GameModule } from './game/game.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { UserModule } from './user/user.module';
     SessionModule,
     PotModule,
     UserModule,
+    GameModule,
   ],
   providers: [AppService],
 })

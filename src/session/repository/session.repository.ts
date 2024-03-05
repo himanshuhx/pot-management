@@ -22,8 +22,9 @@ export class SessionRepository {
     return await this.sessionModel.find();
   }
 
-  async getSessionById(bookId: string): Promise<ReturnSessionDto> {
-    return await this.sessionModel.findOne({ _id: bookId });
+  async getSessionById(sessionId: string): Promise<ReturnSessionDto> {
+    const session = await this.sessionModel.findById(sessionId);
+    return session;
   }
 
   async updateSessionById(
@@ -31,7 +32,7 @@ export class SessionRepository {
     updateSessionRequestBody: UpdateSessionDto,
   ): Promise<ReturnSessionDto> {
     return await this.sessionModel
-      .findOneAndUpdate({ _id: sessionId }, updateSessionRequestBody, {
+      .findByIdAndUpdate({ _id: sessionId }, updateSessionRequestBody, {
         new: true,
       })
       .exec();
