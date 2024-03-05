@@ -55,7 +55,7 @@ export class SessionService {
       throw new HttpException(
         {
           status: HttpStatus.UNPROCESSABLE_ENTITY,
-          error: `Failed to create session with error: ${err.message}`,
+          message: `Failed to create session with error: ${err.message}`,
         },
         HttpStatus.UNPROCESSABLE_ENTITY,
       );
@@ -70,7 +70,7 @@ export class SessionService {
       throw new HttpException(
         {
           status: HttpStatus.UNPROCESSABLE_ENTITY,
-          error: `Failed to retrieve sessions with error: ${err.message}`,
+          message: `Failed to retrieve sessions with error: ${err.message}`,
         },
         HttpStatus.UNPROCESSABLE_ENTITY,
       );
@@ -94,7 +94,7 @@ export class SessionService {
       throw new HttpException(
         {
           status: err.status,
-          error: err.message,
+          message: err.message,
         },
         err.status,
       );
@@ -124,7 +124,7 @@ export class SessionService {
       throw new HttpException(
         {
           status: err.status,
-          error: err.message,
+          message: err.message,
         },
         err.status,
       );
@@ -151,7 +151,7 @@ export class SessionService {
       throw new HttpException(
         {
           status: err.status,
-          error: err.message,
+          message: err.message,
         },
         err.status,
       );

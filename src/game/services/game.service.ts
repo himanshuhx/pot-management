@@ -28,13 +28,6 @@ export class GameService {
 
       const pot = await this.potService.getPotById(gameDto.potId);
 
-      if (!session || !pot) {
-        throw new NotFoundException({
-          status: HttpStatus.NOT_FOUND,
-          message: `Failed to find session: ${session._id} or pot:  ${pot._id}`,
-        });
-      }
-
       // Get All users registered for the pot
       const registeredUsers =
         await this.userService.getAllUsersWithSessionIdAndPotId(
@@ -49,8 +42,8 @@ export class GameService {
     } catch (err) {
       throw new HttpException(
         {
-          status: HttpStatus.UNPROCESSABLE_ENTITY,
-          error: `Failed to play game with error: ${err.message}`,
+          status: err.status,
+          message: `Failed to play game with error: ${err.message}`,
         },
         HttpStatus.UNPROCESSABLE_ENTITY,
       );

@@ -25,7 +25,7 @@ export class PotService {
       throw new HttpException(
         {
           status: HttpStatus.UNPROCESSABLE_ENTITY,
-          error: `Failed to create pot with error: ${err.message}`,
+          message: `Failed to create pot with error: ${err.message}`,
         },
         HttpStatus.UNPROCESSABLE_ENTITY,
       );
@@ -40,7 +40,7 @@ export class PotService {
       throw new HttpException(
         {
           status: HttpStatus.UNPROCESSABLE_ENTITY,
-          error: `Failed to retrieve pots with error: ${err.message}`,
+          message: `Failed to retrieve pots with error: ${err.message}`,
         },
         HttpStatus.UNPROCESSABLE_ENTITY,
       );
@@ -63,7 +63,7 @@ export class PotService {
       throw new HttpException(
         {
           status: err.status,
-          error: err.message,
+          message: err.message,
         },
         err.status,
       );
@@ -92,7 +92,7 @@ export class PotService {
       throw new HttpException(
         {
           status: err.status,
-          error: err.message,
+          message: err.message,
         },
         err.status,
       );
@@ -115,7 +115,7 @@ export class PotService {
       throw new HttpException(
         {
           status: err.status,
-          error: err.message,
+          message: err.message,
         },
         err.status,
       );
