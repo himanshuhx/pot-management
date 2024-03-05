@@ -47,6 +47,29 @@ export class UserService {
     }
   }
 
+  async getAllUsersWithSessionIdAndPotId(
+    sessionId: string,
+    potId: string,
+  ): Promise<ReturnUserDto[]> {
+    try {
+      this.logger.log(
+        `retrieving All User Datawith session Id ${sessionId} and potId ${potId}`,
+      );
+      return await this.userRepository.getAllUsersWithSessionIdAndPotId(
+        sessionId,
+        potId,
+      );
+    } catch (err) {
+      throw new HttpException(
+        {
+          status: HttpStatus.UNPROCESSABLE_ENTITY,
+          error: `Failed to retrieve user with error: ${err.message}`,
+        },
+        HttpStatus.UNPROCESSABLE_ENTITY,
+      );
+    }
+  }
+
   async getUserById(userId): Promise<ReturnUserDto> {
     try {
       this.logger.log(`retrieving Session with ${userId}`);

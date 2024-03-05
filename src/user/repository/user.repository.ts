@@ -22,6 +22,12 @@ export class UserRepository {
     return await this.userModel.find();
   }
 
+  async getAllUsersWithSessionIdAndPotId(
+    sessionId: string,
+    potId: string,
+  ): Promise<ReturnUserDto[]> {
+    return await this.userModel.find({ sessionId: sessionId, potId: potId });
+  }
   async getUserById(bookId: string): Promise<ReturnUserDto> {
     return await this.userModel.findOne({ _id: bookId });
   }
