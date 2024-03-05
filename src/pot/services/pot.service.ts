@@ -98,4 +98,27 @@ export class PotService {
       );
     }
   }
+
+  async deletePotById(potId: string): Promise<any> {
+    try {
+      this.logger.log(`deleting POT with id: ${potId}`);
+      const potDetails = await this.potRepository.getPotById(potId);
+      if (potDetails) {
+        return await this.potRepository.deletePotById(potId);
+      } else {
+        throw new NotFoundException({
+          status: HttpStatus.NOT_FOUND,
+          message: `Failed to delete pot, no pot found with id:${potId}`,
+        });
+      }
+    } catch (err) {
+      throw new HttpException(
+        {
+          status: err.status,
+          error: err.message,
+        },
+        err.status,
+      );
+    }
+  }
 }

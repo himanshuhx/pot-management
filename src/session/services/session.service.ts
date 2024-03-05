@@ -130,4 +130,31 @@ export class SessionService {
       );
     }
   }
+
+  async deleteSessionById(sessionId: string): Promise<any> {
+    try {
+      this.logger.log(`deleting session with sessionId: ${sessionId}`);
+      const session = await this.sessionRepository.getSessionById(sessionId);
+      if (session) {
+        const associatedPotIds = session.pots;
+        associatedPotIds.forEach((potId) => {
+          this.potService.deletePotById(potId);
+        });
+        return await this.sessionRepository.deleteSessionById(sessionId);
+      } else {
+        throw new NotFoundException({
+          status: HttpStatus.NOT_FOUND,
+          message: `Failed to delete session, no session found with id:${sessionId}`,
+        });
+      }
+    } catch (err) {
+      throw new HttpException(
+        {
+          status: err.status,
+          error: err.message,
+        },
+        err.status,
+      );
+    }
+  }
 }

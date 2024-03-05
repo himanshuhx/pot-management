@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Logger,
   Param,
@@ -55,5 +56,13 @@ export class SessionController {
       sessionId,
       updateSessionRequestBody,
     );
+  }
+
+  @Delete('/:sessionId')
+  async deleteSessionById(@Param('sessionId') sessionId: string): Promise<any> {
+    this.logger.log(
+      `deleting session with sessionId: ${sessionId} via DELETE API`,
+    );
+    return this.sessionService.deleteSessionById(sessionId);
   }
 }
