@@ -35,7 +35,7 @@ export class SessionController {
   }
 
   @Get('/:sessionId')
-  async getBookById(
+  async getSessionById(
     @Param('sessionId') sessionId: string,
   ): Promise<ReturnSessionDto> {
     this.logger.log(
