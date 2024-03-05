@@ -1,73 +1,64 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+pot-management serves api's for pot game
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+STEPS -
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+1. create a session with request body as below
+   ENDPOINT - POST http://localhost:3000/session
+   {
+   "startTime":"2024-03-05T12:00:00.000Z", // timestamp at which you want to start a session
+   "sessionDuration": 3, // duration for which you want the session 3 -> resemble 3 hour
+   "potSize": 2 // how many pots you want for that session
+   }
 
-## Description
+   api response -
+   {
+   "\_id": "65e6f1163fc73d52ca6d4cad", // session tunique id
+   "startTime": "2024-03-05T12:00:00.000Z", // session start time
+   "endTime": "2024-03-05T15:00:00.000Z", // session end time
+   "sessionDuration": 3, // session duration
+   "potSize": 2, // total pots associated with session
+   "pots": [
+   "65e6f1173fc73d52ca6d4caf", // each pot unique id
+   "65e6f1173fc73d52ca6d4cb0"
+   ],
+   "\_v": 0
+   }
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+2. once session is created we need to add user
+   ENDPOINT - POST http://localhost:3000/user
+   request body
+   {
+   "email": "user1@gmail.com",
+   "userName": "user1"
+   }
+   api response
+   {
+   "userName": "user1",
+   "email": "user1@gmail.com",
+   "balance": 2000,
+   "\_id": "65e6f3eeabb8b8cf78e11ada",
+   "\_\_v": 0
+   }
 
-## Installation
+3. once user is created we need to associate user with a session and pot for them to play
+   NOTE - with current implementation user can only be associated to one session and one pot of that session only
+   ENDPOINT - PATCH http://localhost:3000/user
+   request body
+   {
+   "sessionId": "65e6f1163fc73d52ca6d4cad",
+   "potId": "65e6f1173fc73d52ca6d4caf"
+   }
+   response body
+   {
+   "\_id": "65e6f3eeabb8b8cf78e11ada",
+   "userName": "user1",
+   "email": "user1@gmail.com",
+   "balance": 4000,
+   "\_\_v": 0,
+   "potId": "65e6f1173fc73d52ca6d4caf",
+   "sessionId": "65e6f1163fc73d52ca6d4cad"
+   }
 
-```bash
-$ npm install
-```
-
-## Running the app
-
-```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
-```
-
-## Test
-
-```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
-```
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](LICENSE).
+4. play game
+   ENDPOINT - GET http://localhost:3000/game
+   money won will be automatically updated in user account
