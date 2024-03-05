@@ -5,7 +5,6 @@ export type PotDocument = Pot & Document;
 
 @Schema()
 export class Pot {
-  @Prop()
   _id: mongoose.Types.ObjectId;
 
   @Prop()

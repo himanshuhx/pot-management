@@ -5,7 +5,6 @@ export type SessionDocument = Session & Document;
 
 @Schema()
 export class Session {
-  @Prop()
   _id: mongoose.Types.ObjectId;
 
   @Prop()

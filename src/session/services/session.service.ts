@@ -1,15 +1,17 @@
 import {
   HttpException,
   HttpStatus,
+  Injectable,
   Logger,
   NotFoundException,
 } from '@nestjs/common';
 import { ReturnSessionDto } from '../dto/return-session.dto';
 import { SessionRepository } from '../repository/session.repository';
 import { CreateSessionDto } from '../dto/create-session.dto';
-import { PotService } from 'src/pot/services/pot.service';
-import { Pot } from 'src/pot/models/pot.model';
+import { PotService } from '../../pot/services/pot.service';
+import { Pot } from '../../pot/models/pot.model';
 
+@Injectable()
 export class SessionService {
   constructor(
     private readonly sessionRepository: SessionRepository,
@@ -21,14 +23,14 @@ export class SessionService {
     createSessionDto: CreateSessionDto,
   ): Promise<ReturnSessionDto> {
     try {
-      this.logger.log('Registering new Session');
       // calculate end time for session on basis of session duration provided
       const endTime = new Date(createSessionDto.startTime);
       endTime.setHours(endTime.getHours() + createSessionDto.sessionDuration);
       createSessionDto.endTime = endTime;
 
-      // save ssion Object in DB
+      // save session Object in DB
       const session = await this.sessionRepository.save(createSessionDto);
+
       let pots = [];
       // create pots on the basis of potSize provided
       for (let i = 0; i < createSessionDto.potSize; i++) {
@@ -36,11 +38,19 @@ export class SessionService {
         const pot = new Pot();
         pot.sessionId = session._id;
         pot.balance = 1000;
-        pots.push(new Pot());
+        pots.push(pot);
       }
+
       // save pots in pot collection
-      await this.potService.createPots(pots);
-      return session;
+      const savedPots = await this.potService.createPots(pots);
+
+      //get pot ids and update session collection
+      const potIds = [];
+      for (const pot of savedPots) {
+        potIds.push(pot._id);
+      }
+
+      return await this.updateSessionById(session._id, { pots: potIds });
     } catch (err) {
       throw new HttpException(
         {
